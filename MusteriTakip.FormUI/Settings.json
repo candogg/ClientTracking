@@ -1,0 +1,5 @@
+{
+  "DbConnectionSettings": {
+    "ConnectionString": "Server=.\\SQLEXPRESS;Database=MusteriTakip;Trusted_Connection=True;"
+  }
+}
