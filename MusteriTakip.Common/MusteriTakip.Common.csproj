@@ -57,6 +57,7 @@
     <Compile Include="Models\Abstract\ClientItem.cs" />
     <Compile Include="Models\Base\ItemBase.cs" />
     <Compile Include="Models\Constants.cs" />
+    <Compile Include="Models\Statics.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

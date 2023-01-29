@@ -1,11 +1,11 @@
 ﻿using MusteriTakip.Common.Extensions;
 using MusteriTakip.Common.Generic;
-using MusteriTakip.Common.Items;
 using MusteriTakip.Common.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MusteriTakip.Common.Helpers
@@ -16,24 +16,27 @@ namespace MusteriTakip.Common.Helpers
     public class SqlHelper : Singleton<SqlHelper>
     {
         /// <summary>
-        /// Fetch generic data from database and return list of items
+        /// Fetch generic data from database and return list of items (table name constant class scope)
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="sqlCommand"></param>
         /// <returns></returns>
-        public async Task<(List<T>, string)> GetItems<T>(string sqlCommand)
+        public async Task<(List<T>, string)> GetItems<T>(Func<T, bool> filter = null)
         {
             try
             {
                 var list = new List<T>();
+                var t = Activator.CreateInstance<T>();
 
-                var sqlSetting = FileHelper.Instance.ReadSettingSection<DbConnectionSettingsItem>();
+                var classScope = t.GetType().GetField(Constants.Scope).GetRawConstantValue().ToString();
 
-                if (sqlSetting.Item1 == null) return await Task.FromResult((new List<T>(), sqlSetting.Item2));
+                var sqlCommand = $"select * from {classScope} with (nolock)";
 
-                if (sqlSetting.Item1.ConnectionString.IsNullOrEmpty()) return await Task.FromResult((new List<T>(), Constants.DbConnectionStringIncorrect));
+                if (Statics.SqlSetting.Item1 == null) return await Task.FromResult((new List<T>(), Statics.SqlSetting.Item2));
 
-                using (var sqlCon = new SqlConnection(sqlSetting.Item1.ConnectionString))
+                if (Statics.SqlSetting.Item1.ConnectionString.IsNullOrEmpty()) return await Task.FromResult((new List<T>(), Constants.DbConnectionStringIncorrect));
+
+                using (var sqlCon = new SqlConnection(Statics.SqlSetting.Item1.ConnectionString))
                 using (var sqlCmd = new SqlCommand(sqlCommand, sqlCon))
                 {
                     if (sqlCon.State == ConnectionState.Closed)
@@ -43,7 +46,14 @@ namespace MusteriTakip.Common.Helpers
                     {
                         if (reader.HasRows)
                         {
-                            list = reader.ToMapList<T>().Item1;
+                            if (filter != null)
+                            {
+                                list = reader.ToMapList<T>().Item1.Where(filter).ToList();
+                            }
+                            else
+                            {
+                                list = reader.ToMapList<T>().Item1.ToList();
+                            }
                         }
                     }
                 }

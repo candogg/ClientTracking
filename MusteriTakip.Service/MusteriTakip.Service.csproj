@@ -41,7 +41,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\Abstract\IClientService.cs" />
+    <Compile Include="Services\Abstract\ClientService.cs" />
+    <Compile Include="Interfaces\Base\IServiceBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Base\ServiceBase.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MusteriTakip.Common\MusteriTakip.Common.csproj">
+      <Project>{4E27F9EF-B202-4883-BB45-B26DE05B736E}</Project>
+      <Name>MusteriTakip.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MusteriTakip.Data\MusteriTakip.Data.csproj">
+      <Project>{ED175690-F067-4F95-8FA6-25288BFDFA58}</Project>
+      <Name>MusteriTakip.Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

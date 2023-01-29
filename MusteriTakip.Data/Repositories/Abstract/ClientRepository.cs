@@ -1,4 +1,5 @@
-﻿using MusteriTakip.Common.Items;
+﻿using MusteriTakip.Common.Helpers;
+using MusteriTakip.Common.Items;
 using MusteriTakip.Common.Models.Abstract;
 using MusteriTakip.Data.Interfaces.Abstract;
 using MusteriTakip.Data.Repositories.Base;
@@ -29,13 +30,13 @@ namespace MusteriTakip.Data.Repositories.Abstract
             return await Task.FromResult(result);
         }
 
-        public async Task<ResultItem> GetAll(Func<ClientItem> filter = null)
+        public async Task<ResultItem> GetAll(Func<ClientItem, bool> filter = null)
         {
             var result = new ResultItem();
 
             try
             {
-
+                result.Data = await SqlHelper.Instance.GetItems(filter);
             }
             catch (Exception ex)
             {

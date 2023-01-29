@@ -48,7 +48,7 @@ namespace MusteriTakip.Common.Extensions
         /// <typeparam name="T"></typeparam>
         /// <param name="dataReader"></param>
         /// <returns></returns>
-        public static (List<T>, string) ToMapList<T>(this SqlDataReader dataReader)
+        public static (IEnumerable<T>, string) ToMapList<T>(this SqlDataReader dataReader)
         {
             try
             {
@@ -61,7 +61,7 @@ namespace MusteriTakip.Common.Extensions
                 {
                     var item = dataReader.ToMapSingle<T>();
 
-                    if (Equals(item, default(T))) continue;
+                    if (item.Equals(default(T))) continue;
 
                     list.Add(item);
                 }

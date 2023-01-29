@@ -3,12 +3,12 @@ using MusteriTakip.Common.Models.Abstract;
 using System;
 using System.Threading.Tasks;
 
-namespace MusteriTakip.Data.Interfaces.Abstract
+namespace MusteriTakip.Service.Interfaces.Abstract
 {
     /// <summary>
     /// Author: Can DOĞU
     /// </summary>
-    public interface IClientRepository
+    public interface IClientService
     {
         Task<ResultItem> GetAll(Func<ClientItem, bool> filter = null);
         Task<ResultItem> Remove(ClientItem item);

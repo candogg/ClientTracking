@@ -10,6 +10,8 @@ namespace MusteriTakip.Common.Models.Abstract
     /// </summary>
     public class ClientItem : ItemBase
     {
+        public const string Scope = "Clients";
+
         [Required]
         [MaxLength(150)]
         public string Name { get; set; }

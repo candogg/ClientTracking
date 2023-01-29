@@ -1,5 +1,5 @@
-﻿using MusteriTakip.Common.Helpers;
-using MusteriTakip.Common.Models.Abstract;
+﻿using MusteriTakip.Service.Interfaces.Abstract;
+using MusteriTakip.Service.Services.Abstract;
 using System.Windows.Forms;
 
 namespace MusteriTakip.FormUI
@@ -9,14 +9,18 @@ namespace MusteriTakip.FormUI
     /// </summary>
     public partial class MainForm : Form
     {
+        private readonly IClientService clientService;
+
         public MainForm()
         {
             InitializeComponent();
+
+            clientService = new ClientService();
         }
 
         private async void button1_Click(object sender, System.EventArgs e)
         {
-            var clientList = await SqlHelper.Instance.GetItems<ClientItem>("select * from Clients");
+            var clientList = await clientService.GetAll();
         }
     }
 }
